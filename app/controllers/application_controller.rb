@@ -18,7 +18,12 @@ class ApplicationController < Sinatra::Base
 
   post "/signup" do
     #your code here
-
+    if params[:username] == "" || params[:password] == ""
+      redirect '/failure'
+    else
+      User.create(:username => params[:username], :password => params[:password])
+      redirect '/login'
+    end
   end
 
   get '/account' do
@@ -33,6 +38,13 @@ class ApplicationController < Sinatra::Base
 
   post "/login" do
     ##your code here
+    @user = User.find_by(:username => params[:username])
+    if @user && @user.authenticate(params[:password])
+      session[:user_id] = @user.id
+      redirect '/account'
+    else
+      redirect '/failure'
+    end
   end
 
   get "/failure" do
@@ -54,4 +66,27 @@ class ApplicationController < Sinatra::Base
     end
   end
 
+  get '/desposit' do
+    amount = params[:amount]
+    @user = User.find_by_id(session[:id])
+    if @user
+      @user.balance += amount
+      erb :success
+    else
+      erb :failed_transaction
+    end
+    @error_message = "Something happend. Sorry please try again."
+  end
+
+  get '/withdraw' do
+    amount = params[:amount]
+    @user = User.find_by_id(session[:id])
+    if @user && @user.balance >= amount
+      @user.balance -= amount
+      erb :success
+    else
+      @error_message = "Balance is less for withdrawal."
+      erb :failed_transaction
+    end
+  end
 end

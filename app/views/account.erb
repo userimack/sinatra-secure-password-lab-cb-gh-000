@@ -1,5 +1,25 @@
-<h1>Welcome</h1>
+<h1>Welcome, <%=@user.username %></h1>
 
 <p>We are currently working on your account.</p>
 
 <p><a href="/logout">Log Out</a></p>
+<!--
+<%# <% if Helpers.logged_in?(session) %> %>
+    <h3>Enter the amount you want to deposit</h3>
+    <form method="post" action="/deposit">
+        <label for="amount">Amount</label>
+        <input type="text" name="amount">
+        <br>
+        <input type="submit" value="submit">
+    </form>
+
+    <h3>Enter the amount you want to withdraw.</h3>
+    <h3>Please note your current balance is <%#<%= Helpers.current_user.balance(session) %> #%></h3>
+    <form method="post" action="/withdraw">
+        <label for="amount">Amount</label>
+        <input type="text" name="amount">
+        <br>
+        <input type="submit" value="submit">
+    </form>
+    -->
+<%# <% end %> %>
